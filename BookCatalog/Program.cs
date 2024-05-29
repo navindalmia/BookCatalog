@@ -1,4 +1,6 @@
-using BookCatalog.FrontEnd.Components;
+using BookCatalog.Components;
+using BookCatalog.Infrastructure.Context;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,7 +8,10 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorComponents()
     .AddInteractiveServerComponents();
 
-//builder.Services.AddDbContextFactory<BookCatalogDbContext>
+builder.Services.AddDbContextFactory<BookCatalogDbContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("BookCatalogConnection"));
+});
 
 var app = builder.Build();
 
