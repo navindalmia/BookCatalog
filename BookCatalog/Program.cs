@@ -1,5 +1,7 @@
+using BookCatalog.Application.Interfaces;
 using BookCatalog.Components;
 using BookCatalog.Infrastructure.Context;
+using BookCatalog.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,7 +14,7 @@ builder.Services.AddDbContextFactory<BookCatalogDbContext>(options =>
 {
     options.UseSqlServer(builder.Configuration.GetConnectionString("BookCatalogConnection"));
 });
-
+builder.Services.AddScoped<IBookRepository, BookRepository>();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
