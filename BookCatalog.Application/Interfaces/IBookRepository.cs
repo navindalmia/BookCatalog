@@ -5,5 +5,9 @@ namespace BookCatalog.Application.Interfaces
     public interface IBookRepository
     {
         Task AddAsync(Book book);
+        //Task DeleteAsync(Book book);
+        Task<List<Book>> GetAllAsync();
+                
     }
+
 }

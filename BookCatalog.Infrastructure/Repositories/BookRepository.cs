@@ -20,5 +20,11 @@ namespace BookCatalog.Infrastructure.Repositories
             _context.Books.Add(book);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<List<Book>> GetAllAsync()
+        {
+           var books = await _context.Books.ToListAsync();
+            return books;
+        }
     }
 }

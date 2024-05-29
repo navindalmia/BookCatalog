@@ -7,7 +7,7 @@
 </PageTitle>
 <div class="row justify-content-center">
     <div class="col-6">
-        <EditForm method="post" FormName="AddBookForm" OnValidSubmit="AddBook" Model="Book"
+        <EditForm Enhance="true" method="post" FormName="AddBookForm" OnValidSubmit="AddBook" Model="Book"
             autocomplete="on">
             <h3 align="center">
                 Add New Book
@@ -52,7 +52,12 @@
                 <button class="btn btn-primary shadow-none">
                     Submit
                 </button>
+                <a href="/" class="btn btn-secondary ms-3 shadow-none">
+                    Back to List
+                </a>
+
             </div>
+
             <DataAnnotationsValidator/>
             <ValidationSummary/>
         </EditForm>
