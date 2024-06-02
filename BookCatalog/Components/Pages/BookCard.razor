@@ -1,4 +1,7 @@
-﻿<div class="book-card">
+﻿@inject IBookRepository Repository
+@inject NavigationManager Navigation
+@rendermode InteractiveServer
+<div class="book-card">
     <div class="book-card-body">
         <h5>@Book.Title</h5>
         By @Book.Author | @Book.PublicationDate?.ToString("MMMM dd, yyyy")
@@ -8,11 +11,22 @@
         <a href="@($"/edit/{Book.Id}")" class="btn btn-warning shadow-none">
         Edit    
         </a>
-
+       @*  <a href="@($"/delete/{Book.Id}")" class="btn btn-danger shadow-none m-2" >
+            Delete
+        </a> *@
+        <button class="btn btn-danger m-2" @onclick="DeleteBook">Delete</button>
     </div>
+   
 </div>
 @code {
     [Parameter]
     public  required Book Book { get; set; }
 
+
+
+    private async Task  DeleteBook()
+    {
+        await Repository.DeleteAsync(Book.Id);
+        Navigation.Refresh(true);
+    }
 }

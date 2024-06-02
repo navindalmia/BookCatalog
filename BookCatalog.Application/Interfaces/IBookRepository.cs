@@ -10,6 +10,8 @@ namespace BookCatalog.Application.Interfaces
 
         Task<Book?> GetByIdAsync(int id);
         Task UpdateAsync(Book book); 
+
+        Task DeleteAsync(int id);
                 
     }
 

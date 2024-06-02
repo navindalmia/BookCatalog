@@ -1,0 +1,13 @@
+﻿@page "/delete/{id:int}"
+@inject IBookRepository Repository
+
+<>Deleted</>
+@code {
+    [Parameter]
+    public int Id { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+       await Repository.DeleteAsync(Id);
+    }
+}
