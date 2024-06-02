@@ -1,0 +1,27 @@
+﻿@if (Show)
+{
+    <div class="confirm-dialog-container">
+        <div class="confirm-dialog">
+        <h3>Are you sure?</h3>
+       
+            <button class="btn btn-outline-secondary" @onclick="OnCancel">Cancel</button>
+            <button class="btn btn-danger" @onclick="OnOk">OK</button>
+
+        </div>
+
+    </div>
+}
+@code {
+
+    [Parameter]
+    public bool Show { get; set; }
+
+    [Parameter]
+    public EventCallback OnCancel { get; set; }
+
+    [Parameter]
+    public EventCallback OnOk { get; set; }
+
+
+
+}

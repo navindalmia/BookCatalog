@@ -14,19 +14,37 @@
        @*  <a href="@($"/delete/{Book.Id}")" class="btn btn-danger shadow-none m-2" >
             Delete
         </a> *@
-        <button class="btn btn-danger m-2" @onclick="DeleteBook">Delete</button>
+        <button class="btn btn-danger m-2" @onclick="OpenConfirmDialog">Delete</button>
     </div>
    
 </div>
+<DeleteConfirm Show="ShowConfirmDialog" OnOk="DeleteBook" OnCancel="CancelDelete" />
+
 @code {
     [Parameter]
     public  required Book Book { get; set; }
 
-
+    private bool ShowConfirmDialog;
 
     private async Task  DeleteBook()
     {
         await Repository.DeleteAsync(Book.Id);
         Navigation.Refresh(true);
+    }
+
+    private void OpenConfirmDialog()
+    {
+        
+     ShowConfirmDialog = true;
+
+
+    }
+
+    private void CancelDelete()
+    {
+
+        ShowConfirmDialog = false;
+
+
     }
 }
