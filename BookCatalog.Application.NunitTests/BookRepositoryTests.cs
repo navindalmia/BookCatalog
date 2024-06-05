@@ -1,5 +1,6 @@
 ﻿using BookCatalog.Domain.Entities;
 using BookCatalog.Domain.Enums;
+using BookCatalog.Infrastructure;
 using BookCatalog.Infrastructure.Context;
 using BookCatalog.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
@@ -183,19 +184,5 @@ namespace BookCatalog.Tests.Repositories
             Assert.That(result, Is.Null);
         }
 
-        private class TestDbContextFactory : IDbContextFactory<BookCatalogDbContext>
-        {
-            private readonly DbContextOptions<BookCatalogDbContext> _options;
-
-            public TestDbContextFactory(DbContextOptions<BookCatalogDbContext> options)
-            {
-                _options = options;
-            }
-
-            public BookCatalogDbContext CreateDbContext()
-            {
-                return new BookCatalogDbContext(_options);
-            }
-        }
     }
 }
