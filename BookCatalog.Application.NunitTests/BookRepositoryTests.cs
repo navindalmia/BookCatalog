@@ -5,9 +5,6 @@ using BookCatalog.Infrastructure.Context;
 using BookCatalog.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
-using NUnit.Framework.Legacy;
-using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace BookCatalog.Tests.Repositories
 {
@@ -75,7 +72,7 @@ namespace BookCatalog.Tests.Repositories
 
             var book_One = new Book
             {
-
+                 
                 Id = 1,
                 Title = "TestTitle1",
                 Author = "TestAuthor1",
@@ -92,16 +89,32 @@ namespace BookCatalog.Tests.Repositories
                 PublicationDate = DateTime.Now,
                 Category = Category.Science
             };
+
+            var book_Three = new Book
+            {
+
+                Id = 3,
+                Title = "TestTitle2",
+                Author = "TestAuthor2",
+                PublicationDate = DateTime.Now,
+                Category = Category.Science
+            };
             List<Book> expectedResult = new List<Book>() { book_Two,book_One };
             // Act
-            
+          
             foreach (var book in expectedResult)
             {
                 await _bookRepository.AddAsync(book);
             }
+           
             var result = await _bookRepository.GetAllAsync();
+
+          
+            List<Book> expectedResult2 = new List<Book>() { book_Three, book_One };
+
             //Assert
             Assert.That(result, Is.EquivalentTo(expectedResult));
+            Assert.That(result, Is.Not.EquivalentTo(expectedResult2));
         }
 
         [Test]
