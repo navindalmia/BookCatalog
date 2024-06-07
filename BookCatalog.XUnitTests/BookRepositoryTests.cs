@@ -1,21 +1,19 @@
 ﻿using BookCatalog.Domain.Entities;
 using BookCatalog.Domain.Enums;
-using BookCatalog.Infrastructure;
 using BookCatalog.Infrastructure.Context;
 using BookCatalog.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
-using NUnit.Framework;
 
-namespace BookCatalog.Infrastructure.NunitTests
+namespace BookCatalog.Infrastructure.XunitTests
 {
-    [TestFixture]
-    public class BookRepositoryTests
+    
+    public class BookRepositoryTests:IDisposable
     {
         private BookRepository _bookRepository;
         private BookCatalogDbContext _context;
 
-        [SetUp]
-        public void Setup()
+   
+        public BookRepositoryTests()
         {
             var options = new DbContextOptionsBuilder<BookCatalogDbContext>()
                 .UseInMemoryDatabase(databaseName: "TestDatabase")
@@ -26,14 +24,9 @@ namespace BookCatalog.Infrastructure.NunitTests
             _bookRepository = new BookRepository(factory);
         }
 
-        [TearDown]
-        public void TearDown()
-        {
-            _context.Database.EnsureDeleted();
-            _context.Dispose();
-        }
+        
 
-        [Test]
+        [Fact]
         public async Task AddAsync_ShouldAddBook()
         {
             // Arrange
@@ -55,24 +48,22 @@ namespace BookCatalog.Infrastructure.NunitTests
 
             // Assert
           
-            Assert.That(result,Is.Not.Null);
-            Assert.That(result.Id, Is.EqualTo(book.Id));    
-            Assert.That(result.PublicationDate, Is.EqualTo(book.PublicationDate));  
-            Assert.That(result.Category, Is.EqualTo(book.Category));    
-            Assert.That(result.Author, Is.EqualTo(book.Author));
-            Assert.That(result.Title, Is.EqualTo(book.Title));
-
-
-
+            Assert.NotNull(result);
+            Assert.Equal(book.Id,result.Id );    
+            Assert.Equal(book.PublicationDate,result.PublicationDate);  
+            Assert.Equal(book.Category,result.Category);    
+            Assert.Equal(book.Author,result.Author);
+            Assert.Equal(book.Title,result.Title);
         }
-        [Test]
+
+        [Fact]
         public async Task GetAllAsync_ShouldReturnAllBooks()
         {
             //Arrange
 
             var book_One = new Book
             {
-                 
+
                 Id = 1,
                 Title = "TestTitle1",
                 Author = "TestAuthor1",
@@ -99,25 +90,25 @@ namespace BookCatalog.Infrastructure.NunitTests
                 PublicationDate = DateTime.Now,
                 Category = Category.Science
             };
-            List<Book> expectedResult = new List<Book>() { book_Two,book_One };
+            List<Book> expectedResult = new List<Book>() { book_Two, book_One };
             // Act
-          
+
             foreach (var book in expectedResult)
             {
                 await _bookRepository.AddAsync(book);
             }
-           
+
             var result = await _bookRepository.GetAllAsync();
 
-          
+
             List<Book> expectedResult2 = new List<Book>() { book_Three, book_One };
 
             //Assert
-            Assert.That(result, Is.EquivalentTo(expectedResult));
-            Assert.That(result, Is.Not.EquivalentTo(expectedResult2));
+            Assert.Equal(expectedResult.ToArray(),result.ToArray());
+            Assert.NotEqual(expectedResult2.ToArray(),result.ToArray());
         }
 
-        [Test]
+        [Fact]
         public async Task GetByIdAsync_ShouldReturnCorrectBook()
         {
 
@@ -136,16 +127,16 @@ namespace BookCatalog.Infrastructure.NunitTests
             var result = await _bookRepository.GetByIdAsync(book.Id);
 
             //Assert
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.Id, Is.EqualTo(book.Id));
-            Assert.That(result.PublicationDate, Is.EqualTo(book.PublicationDate));
-            Assert.That(result.Category, Is.EqualTo(book.Category));
-            Assert.That(result.Author, Is.EqualTo(book.Author));
-            Assert.That(result.Title, Is.EqualTo(book.Title));
+            Assert.NotNull(result);
+            Assert.Equal(book.Id,result.Id );
+            Assert.Equal(book.PublicationDate,result.PublicationDate);
+            Assert.Equal(book.Category,result.Category);
+            Assert.Equal(book.Author, result.Author);
+            Assert.Equal(book.Title, result.Title);
 
         }
 
-        [Test]
+        [Fact]
         public async Task UpdateAsync_ShouldUpdateBookCorrectly()
         {
 
@@ -166,15 +157,14 @@ namespace BookCatalog.Infrastructure.NunitTests
             var result = await _bookRepository.GetByIdAsync(book.Id);
 
             //Assert
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.Id, Is.EqualTo(book.Id));
-            Assert.That(result.PublicationDate, Is.EqualTo(book.PublicationDate));
-            Assert.That(result.Category, Is.EqualTo(book.Category));
-            Assert.That(result.Author, Is.EqualTo(book.Author));
-            Assert.That(result.Title, Is.EqualTo(book.Title));
-
+            Assert.NotNull(result);
+            Assert.Equal(book.Id, result.Id);
+            Assert.Equal(book.PublicationDate, result.PublicationDate);
+            Assert.Equal(book.Category, result.Category);
+            Assert.Equal(book.Author, result.Author);
+            Assert.Equal(book.Title, result.Title);
         }
-        [Test]
+        [Fact]
         public async Task DeleteAsync_ShouldDeleteBook()
         {
 
@@ -189,13 +179,18 @@ namespace BookCatalog.Infrastructure.NunitTests
             };
 
             // Act
-            await _bookRepository.AddAsync(book);            
+            await _bookRepository.AddAsync(book);
             await _bookRepository.DeleteAsync(book.Id);
             var result = await _bookRepository.GetByIdAsync(book.Id);
 
             //Assert
-            Assert.That(result, Is.Null);
+            Assert.Null(result);
         }
 
+        public void Dispose()
+        {
+            _context.Database.EnsureDeleted();
+            _context.Dispose();
+        }
     }
 }

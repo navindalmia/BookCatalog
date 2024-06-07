@@ -1,7 +1,7 @@
 ﻿using BookCatalog.Infrastructure.Context;
 using Microsoft.EntityFrameworkCore;
 
-namespace BookCatalog.Infrastructure.NunitTests
+namespace BookCatalog.Infrastructure.XunitTests
 {
     class TestDbContextFactory : IDbContextFactory<BookCatalogDbContext>
     {
