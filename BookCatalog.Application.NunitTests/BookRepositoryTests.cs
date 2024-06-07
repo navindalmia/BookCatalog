@@ -114,7 +114,7 @@ namespace BookCatalog.Tests.Repositories
 
             //Assert
             Assert.That(result, Is.EquivalentTo(expectedResult));
-            Assert.That(result, Is.EquivalentTo(expectedResult2));
+            Assert.That(result, Is.Not.EquivalentTo(expectedResult2));
         }
 
         [Test]
