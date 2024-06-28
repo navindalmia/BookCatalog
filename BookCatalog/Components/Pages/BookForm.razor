@@ -74,7 +74,7 @@
     [Parameter]
     public EventCallback<Book> onValidBookSubmit { get; set; }
 
-    private string Title => IsFormEdit ? $"Edit Book{BookId}" : " Add Book";
+    private string Title => IsFormEdit ? $"Edit Book: {Book.Title}" : " Add Book";
 
     protected override async Task OnInitializedAsync()
     {
