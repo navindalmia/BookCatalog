@@ -1,6 +1,6 @@
 
 # Name of the application: BookCatalog
-Application with automated unit testing for storing details of Books like Name, Author and Publication Date
+Blazor Application with automated unit testing for storing details of Books like Name, Author and Publication Date
 
 Sample Images from the application<br>
 ![Screenshot](images/Home_Page.png "Home Page")
